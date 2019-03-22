@@ -12,7 +12,14 @@ class Stack {
   }
 
   peek() {
-    return this.stack[this.stack.length - 1];
+    if (this.length()) { 
+      return this.stack[this.stack.length - 1];
+    }
+    console.log("Stack is empty");
+  }
+
+  length() {
+    return this.stack.length;
   }
 }
 

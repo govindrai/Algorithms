@@ -11,15 +11,18 @@ class QueueTwoStacks {
   }
 
   dequeue() {
-    if (this.stackB.peek()) {
+    if (this.stackB.length()) {
       return this.stackB.pop();
     }
 
-    while (this.stackA.peek()) {
+    while (this.stackA.length()) {
       this.stackB.push(this.stackA.pop());
     }
 
-    return this.stackB.pop();
+    if (this.stackB.length()) {
+      return this.stackB.pop();
+    }
+    throw new Error('cannot dequeue empty queue');
   }
 
   peek() {
@@ -35,13 +38,13 @@ class QueueTwoStacks {
   }
 }
 
-const queue = new QueueTwoStacks()
+const queue = new QueueTwoStacks();
 
-console.log(queue.enqueue(2))
-console.log(queue.enqueue(4))
-console.log(queue.enqueue(6))
-console.log(queue.enqueue(8))
-console.log(queue.dequeue())
-console.log(queue.enqueue(10))
-console.log(queue.peek())
-console.log(queue.dequeue())
+console.log(queue.enqueue(2));
+console.log(queue.enqueue(4));
+console.log(queue.enqueue(6));
+console.log(queue.enqueue(8));
+console.log(queue.dequeue());
+console.log(queue.enqueue(10));
+console.log(queue.peek());
+console.log(queue.dequeue());

@@ -16,6 +16,47 @@ class BinaryTreeNode {
   }
 }
 
+function isBinarySearchTree(headNode) {
+  const stack = [[headNode, null]];
+  while (stack.length > 0) {
+    const [node, treeSide] = stack.pop();
+
+    if (node.left) {
+      if (node.left.value > node.value) {
+        return false;
+      }
+    }
+    if (node.right) {
+      if (node.right.value < node.value) {
+        return false;
+      }
+    }
+
+    if (treeSide) {
+      if (treeSide === 'right' && node.right) {
+        if (node.right.value < headNode.value) {
+          return false;
+        }
+        stack.push([node.right, treeSide]);
+      }
+      if (node.left) {
+        if (node.left.value > headNode.value) {
+          return false;
+        }
+        stack.push([node.left, treeSide]);
+      }
+    } else {
+      if (node.right) {
+        stack.push([node.right, 'right']);
+      }
+      if (node.left) {
+        stack.push([node.left, 'left']);
+      }
+    }
+  }
+  return true;
+}
+
 // function isBinarySearchTree(headNode) {
 //   const stack = [[headNode, null]];
 //   while (stack.length > 0) {
@@ -54,52 +95,48 @@ class BinaryTreeNode {
 //   return true;
 // }
 
+// function isBinarySearchTree(treeRoot) {
+//   // Start at the root, with an arbitrarily low lower bound
+//   // and an arbitrarily high upper bound
+//   const nodeAndBoundsStack = [];
+//   nodeAndBoundsStack.push({
+//     node: treeRoot,
+//     lowerBound: Number.NEGATIVE_INFINITY,
+//     upperBound: Number.POSITIVE_INFINITY,
+//   });
 
-function isBinarySearchTree(treeRoot) {
+//   // Depth-first traversal
+//   while (nodeAndBoundsStack.length) {
+//     const { node, lowerBound, upperBound } = nodeAndBoundsStack.pop();
 
-  // Start at the root, with an arbitrarily low lower bound
-  // and an arbitrarily high upper bound
-  const nodeAndBoundsStack = [];
-  nodeAndBoundsStack.push({
-    node: treeRoot,
-    lowerBound: Number.NEGATIVE_INFINITY,
-    upperBound: Number.POSITIVE_INFINITY,
-  });
+//     // If this node is invalid, we return false right away
+//     if (node.value <= lowerBound || node.value >= upperBound) {
+//       return false;
+//     }
 
-  // Depth-first traversal
-  while (nodeAndBoundsStack.length) {
-    const { node, lowerBound, upperBound } = nodeAndBoundsStack.pop();
+//     if (node.left) {
+//       // This node must be less than the current node
+//       nodeAndBoundsStack.push({
+//         node: node.left,
+//         lowerBound,
+//         upperBound: node.value,
+//       });
+//     }
 
-    // If this node is invalid, we return false right away
-    if (node.value <= lowerBound || node.value >= upperBound) {
-      return false;
-    }
+//     if (node.right) {
+//       // This node must be greater than the current node
+//       nodeAndBoundsStack.push({
+//         node: node.right,
+//         lowerBound: node.value,
+//         upperBound,
+//       });
+//     }
+//   }
 
-    if (node.left) {
-
-      // This node must be less than the current node
-      nodeAndBoundsStack.push({
-        node: node.left,
-        lowerBound,
-        upperBound: node.value,
-      });
-    }
-
-    if (node.right) {
-
-      // This node must be greater than the current node
-      nodeAndBoundsStack.push({
-        node: node.right,
-        lowerBound: node.value,
-        upperBound,
-      });
-    }
-  }
-
-  // If none of the nodes were invalid, return true
-  // (At this point we have checked all nodes)
-  return true;
-}
+//   // If none of the nodes were invalid, return true
+//   // (At this point we have checked all nodes)
+//   return true;
+// }
 // function isBinarySearchTree(headNode) {
 //   const stack = [[headNode, null]];
 //   const headNodeValue = headNode.value;
@@ -147,18 +184,17 @@ function isBinarySearchTree(treeRoot) {
 //   return true
 // }
 
-
 // Tests
 
-// let desc = 'valid full tree';
-// let treeRoot = new BinaryTreeNode(50);
-// let leftNode = treeRoot.insertLeft(30);
-// leftNode.insertLeft(10);
-// leftNode.insertRight(40);
-// let rightNode = treeRoot.insertRight(70);
-// rightNode.insertLeft(60);
-// rightNode.insertRight(80);
-// assertEquals(isBinarySearchTree(treeRoot), true, desc);
+let desc = 'valid full tree';
+let treeRoot = new BinaryTreeNode(50);
+let leftNode = treeRoot.insertLeft(30);
+leftNode.insertLeft(10);
+leftNode.insertRight(40);
+let rightNode = treeRoot.insertRight(70);
+rightNode.insertLeft(60);
+rightNode.insertRight(80);
+assertEquals(isBinarySearchTree(treeRoot), true, desc);
 
 desc = 'both subtrees valid';
 treeRoot = new BinaryTreeNode(50);

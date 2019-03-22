@@ -17,41 +17,74 @@ class BinaryTreeNode {
 }
 
 function isBalanced(treeRoot) {
-  let minHeight;
-  let maxHeight;
-  const stack = [[treeRoot, 1]];
-  while (stack.length > 0) {
-    const [currentNode, currentHeight] = stack.pop();
-    if (currentHeight > maxHeight + 1 || currentHeight < minHeight - 1) {
-      return false;
+  const stack = [[treeRoot, 0]];
+  let maxHeight = null;
+  while (stack.length) {
+    const el = stack.pop();
+    const node = el[0];
+    const height = el[1];
+
+    if (node.right) {
+      stack.push([node.right, height + 1])
     }
 
-    if (currentNode.right !== null) {
-      stack.push([currentNode.right, currentHeight + 1]);
+    if (node.left) {
+      stack.push([node.left, height + 1])
     }
-     if (currentNode.left !== null) {
-      stack.push([currentNode.left, currentHeight + 1]);
-    } 
-    if (currentNode.left === null && currentNode.right === null) {
-      if (!maxHeight) {
-        minHeight = currentHeight;
-        maxHeight = currentHeight;
+
+    if (node.left === null && node.right === null) {
+      if (maxHeight === null) {
+        maxHeight = height;
       } else {
-        if (currentHeight > maxHeight + 1 || currentHeight < minHeight - 1) {
-          return false;
+        if (Math.abs(maxHeight - height) > 1) {
+          return false
         }
-        if (currentHeight < minHeight) {
-          minHeight = currentHeight;
-        }
-        if (currentHeight > maxHeight) {
-          maxHeight = maxHeight;
+        if (height > maxHeight) {
+          maxHeight = height;
         }
       }
     }
   }
-
-  return true;
+  return true
 }
+
+
+// function isBalanced(treeRoot) {
+//   let minHeight;
+//   let maxHeight;
+//   const stack = [[treeRoot, 1]];
+//   while (stack.length > 0) {
+//     const [currentNode, currentHeight] = stack.pop();
+//     if (currentHeight > maxHeight + 1 || currentHeight < minHeight - 1) {
+//       return false;
+//     }
+
+//     if (currentNode.right !== null) {
+//       stack.push([currentNode.right, currentHeight + 1]);
+//     }
+//      if (currentNode.left !== null) {
+//       stack.push([currentNode.left, currentHeight + 1]);
+//     } 
+//     if (currentNode.left === null && currentNode.right === null) {
+//       if (!maxHeight) {
+//         minHeight = currentHeight;
+//         maxHeight = currentHeight;
+//       } else {
+//         if (currentHeight > maxHeight + 1 || currentHeight < minHeight - 1) {
+//           return false;
+//         }
+//         if (currentHeight < minHeight) {
+//           minHeight = currentHeight;
+//         }
+//         if (currentHeight > maxHeight) {
+//           maxHeight = maxHeight;
+//         }
+//       }
+//     }
+//   }
+
+//   return true;
+// }
 
 // Tests
 

@@ -23,7 +23,7 @@ function magicFunction(a, b) {
 }
 
 
-const savedCalculationsHash = {};
+// const savedCalculationsHash = {};
 
 class Adder {
 
@@ -32,14 +32,14 @@ class Adder {
   }
   
   magic(num) {
-    const savedCalculation = savedCalculationsHash[`${this.total}${num}`];
+    const savedCalculation = Adder.savedCalculationsHash[`${this.total}${num}`];
     
     if (savedCalculation) {
       this.total = savedCalculation;
     } else {
       const previousTotal = this.total
       this.total = magicFunction(this.total, num);
-      savedCalculationsHash[`${previousTotal}${num}`] = this.total;
+      Adder.savedCalculationsHash[`${previousTotal}${num}`] = this.total;
     }
     return this;
   }
@@ -49,6 +49,8 @@ class Adder {
   }
   
 }
+
+Adder.savedCalculationsHash = {}
 
 
 
